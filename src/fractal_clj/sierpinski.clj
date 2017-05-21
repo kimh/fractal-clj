@@ -19,39 +19,41 @@
 ;; 1 is row
 ;; (assoc [[1 2 3 ][1 2 3]] 1 [1 9 3])
 
-(defn mark-point [canvas x y]
+(defn mark-point [canvas x y marker]
   (let [_y (- y 1)
         _x (- x 1)
         row (nth canvas _y)
-        new-row (assoc row _x  "*")]
+        new-row (assoc row _x  marker)]
     (assoc canvas _y new-row)))
 
-(defn _draw-line [canvas y start end]
+(defn _draw-line [canvas y start end marker]
   (if (> start end)
     canvas
     (let [_y (- y 1)
-          new-canvas (mark-point canvas start y)]
-      (_draw-line new-canvas y (+ 1 start) end))))
+          new-canvas (mark-point canvas start y marker)]
+      (_draw-line new-canvas y (+ 1 start) end marker))))
 
-(defn draw-line [canvas y start length]
+(defn draw-line [canvas y start length marker]
   (let [end (+ start (- length 1))]
-       (_draw-line canvas y start end)))
+       (_draw-line canvas y start end marker)))
 
-(defn triangle [canvas x y length]
+(defn triangle [canvas x y length marker]
   (loop [cvs canvas
          row y
          start x
          lgh length]
     (if (> 1 lgh)
       cvs
-      (recur (draw-line cvs row start lgh) (- row 1) (+ start 1) (- lgh 2)))))
+      (recur (draw-line cvs row start lgh marker) (- row 1) (+ start 1) (- lgh 2)))))
 
-
-(draw (triangle (create-canvas 11) 1 (get-height 11) 11))
+(defn r-triangle [canvas x y length marker]
+  (loop [cvs canvas
+         row y
+         start x
+         lgh length]
+    (if (> 1 lgh)
+      cvs
+      (recur (draw-line cvs row start lgh marker) (- row 1) (+ start 1) (- lgh 2)))))
 
 (let [length 11]
-  (draw (triangle (create-canvas length) 1 (get-height length) length)))
-
-
-
-(draw (triangle (triangle (create-canvas 11) 1 1 5) 4 4 5))
+  (draw (triangle (create-canvas length) 1 (get-height length) length "*")))
