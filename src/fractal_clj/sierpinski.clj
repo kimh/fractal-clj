@@ -53,7 +53,24 @@
          lgh length]
     (if (> 1 lgh)
       cvs
-      (recur (draw-line cvs row start lgh marker) (- row 1) (+ start 1) (- lgh 2)))))
+      (recur (draw-line cvs row start lgh marker) (+ row 1) (+ start 1) (- lgh 2)))))
 
-(let [length 11]
-  (draw (triangle (create-canvas length) 1 (get-height length) length "*")))
+(defn get-midpoint [triangle-canvas]
+  (let [length (/ (- (count (first triangle-canvas)) 1) 2)
+        x (/ (+ 1 (count (first triangle-canvas))) 3)
+        y (+ 1 (get-height length))]
+    {:length length :x x :y y}))
+
+(defn sip [triangle-canvas]
+  (let [midpoint (get-midpoint triangle-canvas)
+        length (:length midpoint)
+        x (:x midpoint)
+        y (:y midpoint)]
+    (r-triangle triangle-canvas x y length ".")))
+
+(defn start []
+  (let [initial-length 11
+        initial-canvas (triangle (create-canvas initial-length) 1 (get-height initial-length) initial-length "*")]
+    (draw (sip initial-canvas))))
+
+(start)
