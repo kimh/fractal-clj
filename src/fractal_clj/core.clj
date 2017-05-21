@@ -32,7 +32,9 @@
 (defn apply-mandel []
   (let [data (for [x x_vals y y_vals]
                (compute-mandel (new Complex x y) k loopmax))
-        data-with-na (mapcat identity (map #(concat % (cons "NA" '())) (partition-by #(nth % 0) data)))]
+        ;;data-with-na (mapcat identity (map #(concat % '("NA")) (partition-by #(nth % 0) data)))
+        data-with-na (reduce concat (map #(concat % '("NA")) (partition-by #(nth % 0) data)))
+        ]
     (apply str (map fmt data-with-na))))
 
 (defn -main
