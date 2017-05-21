@@ -1,7 +1,16 @@
 (ns fractal-clj.sierpinski)
 
-(defn create-canvas []
-  (vec (repeat 3 (vec (repeat  5 " ")))))
+(defn get-height [length]
+  (loop [lgh length
+         height 0]
+    (if (< lgh 1)
+      height
+      (recur (- lgh 2) (+ height 1)))))
+
+(defn create-canvas [length]
+  (assert (odd? length))
+  (let [height (get-height length)]
+    (vec (repeat height (vec (repeat length " "))))))
 
 (defn draw [canvas]
   (doseq [row canvas]
