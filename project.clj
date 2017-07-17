@@ -10,4 +10,3 @@
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}
   :plugins [[cider/cider-nrepl "0.14.0"]])
-
