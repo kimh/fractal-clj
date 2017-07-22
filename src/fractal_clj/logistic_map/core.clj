@@ -37,7 +37,7 @@
                       (format "%s %s\n" (first x) (last x)))
                     (partition 2 (flatten interleaved))))]
 
-    (spit "output.data" data)))
+    (spit "data/logistic-map.data" data)))
 
 (defn -main []
   (let [data (bif-logistic-map 0.2 2.4 4 0.01 1000 5)]
